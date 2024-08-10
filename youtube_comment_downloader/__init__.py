@@ -29,6 +29,7 @@ def main(argv = None):
     parser.add_argument('--language', '-a', type=str, default=None, help='Language for Youtube generated text (e.g. en)')
     parser.add_argument('--sort', '-s', type=int, default=SORT_BY_RECENT,
                         help='Whether to download popular (0) or recent comments (1). Defaults to 1')
+    parser.add_argument('--https-proxy', help='HTTPS proxy URL')
 
     try:
         args = parser.parse_args() if argv is None else parser.parse_args(argv)
@@ -49,7 +50,7 @@ def main(argv = None):
                 os.makedirs(outdir)
 
         print('Downloading Youtube comments for', youtube_id or youtube_url)
-        downloader = YoutubeCommentDownloader()
+        downloader = YoutubeCommentDownloader(https_proxy=args.https_proxy)
         generator = (
             downloader.get_comments(youtube_id, args.sort, args.language)
             if youtube_id

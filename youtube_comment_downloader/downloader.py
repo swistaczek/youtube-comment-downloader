@@ -22,10 +22,12 @@ YT_HIDDEN_INPUT_RE = r'<input\s+type="hidden"\s+name="([A-Za-z0-9_]+)"\s+value="
 
 class YoutubeCommentDownloader:
 
-    def __init__(self):
+    def __init__(self, https_proxy=None):
         self.session = requests.Session()
         self.session.headers['User-Agent'] = USER_AGENT
         self.session.cookies.set('CONSENT', 'YES+cb', domain='.youtube.com')
+        if https_proxy:
+            self.session.proxies = {'https': https_proxy}
 
     def ajax_request(self, endpoint, ytcfg, retries=5, sleep=20, timeout=60):
         url = 'https://www.youtube.com' + endpoint['commandMetadata']['webCommandMetadata']['apiUrl']
