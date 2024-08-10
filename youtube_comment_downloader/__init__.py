@@ -29,7 +29,7 @@ def main(argv = None):
     parser.add_argument('--language', '-a', type=str, default=None, help='Language for Youtube generated text (e.g. en)')
     parser.add_argument('--sort', '-s', type=int, default=SORT_BY_RECENT,
                         help='Whether to download popular (0) or recent comments (1). Defaults to 1')
-    parser.add_argument('--https-proxy', help='HTTPS proxy URL')
+    parser.add_argument('--https-proxy', '-x', help='HTTPS proxy URL')
 
     try:
         args = parser.parse_args() if argv is None else parser.parse_args(argv)

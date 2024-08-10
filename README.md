@@ -18,7 +18,7 @@ pip install https://github.com/egbertbouman/youtube-comment-downloader/archive/m
 ### Usage as command-line interface
 ```
 $ youtube-comment-downloader --help
-usage: youtube-comment-downloader [--help] [--youtubeid YOUTUBEID] [--url URL] [--output OUTPUT] [--limit LIMIT] [--language LANGUAGE] [--sort SORT]
+usage: youtube-comment-downloader [--help] [--youtubeid YOUTUBEID] [--url URL] [--output OUTPUT] [--limit LIMIT] [--language LANGUAGE] [--sort SORT] [--https-proxy HTTPS_PROXY]
 
 Download Youtube comments without using the Youtube API
 
@@ -30,7 +30,9 @@ optional arguments:
   --pretty, -p                           Change the output format to indented JSON
   --limit LIMIT, -l LIMIT                Limit the number of comments
   --language LANGUAGE, -a LANGUAGE       Language for Youtube generated text (e.g. en)
-  --sort SORT, -s SORT                   Whether to download popular (0) or recent comments (1). Defaults to 1
+  --sort SORT, -s SORT                   Whether to download popular (0) or recent comments (1). 
+  --https-proxy HTTPS_PROXY              HTTPS proxy URL
+  Defaults to 1
 ```
 
 For example:
@@ -53,7 +55,7 @@ You can also use this script as a library. For instance, if you want to print ou
 ```python
 from itertools import islice
 from youtube_comment_downloader import *
-downloader = YoutubeCommentDownloader()
+downloader = YoutubeCommentDownloader(https_proxy='https://user:password@proxy.example.com:8080')
 comments = downloader.get_comments_from_url('https://www.youtube.com/watch?v=ScMzIvxBSi4', sort_by=SORT_BY_POPULAR)
 for comment in islice(comments, 10):
     print(comment)
