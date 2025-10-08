@@ -57,17 +57,7 @@ jobs:
         python -c "import py_compile, glob; [py_compile.compile(f, doraise=True) for f in glob.glob('tests/*.py')]"
 
     - name: Test with pytest (strict mode)
-      run: |
-        pytest tests/ \
-          --record-mode=none \
-          --block-network \
-          --allowed-hosts=localhost \
-          --cov=youtube_comment_downloader \
-          --cov-report=term-missing \
-          --cov-report=xml \
-          --cov-report=html \
-          --timeout=60 \
-          -v
+      run: pytest tests/ --record-mode=none --block-network --allowed-hosts=localhost --cov=youtube_comment_downloader --cov-report=term-missing --cov-report=xml --cov-report=html --timeout=60 -v
       env:
         VCR_RECORD_MODE: none  # Ensure we never record in CI
 
