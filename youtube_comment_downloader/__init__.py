@@ -79,6 +79,7 @@ def main(argv = None):
             if pretty:
                 fp.write(' ' * INDENT +']\n}')
         print('\n[{:.2f} seconds] Done!'.format(time.time() - start_time))
+        sys.exit(0)
 
     except Exception as e:
         print('Error:', str(e))

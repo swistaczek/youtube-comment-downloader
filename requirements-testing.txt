@@ -1,2 +1,6 @@
-pytest
+pytest>=7.0
 pytest-benchmark
+pytest-recording>=0.13.0  # VCR.py integration for pytest
+pytest-cov>=4.0           # Coverage reporting
+pytest-timeout>=2.0       # Prevent hanging tests
+freezegun>=1.2            # Mock datetime for timestamps

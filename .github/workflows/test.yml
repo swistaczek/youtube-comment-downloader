@@ -1,0 +1,123 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+        exclude:
+          # Reduce matrix for faster CI
+          - os: windows-latest
+            python-version: '3.8'
+          - os: windows-latest
+            python-version: '3.9'
+          - os: macos-latest
+            python-version: '3.8'
+          - os: macos-latest
+            python-version: '3.9'
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-testing.txt
+        pip install -e .
+
+    - name: Lint with Python
+      run: |
+        python -m py_compile youtube_comment_downloader/*.py
+        python -m py_compile tests/*.py
+
+    - name: Test with pytest (strict mode)
+      run: |
+        pytest tests/ \
+          --record-mode=none \
+          --block-network \
+          --allowed-hosts=localhost \
+          --cov=youtube_comment_downloader \
+          --cov-report=term-missing \
+          --cov-report=xml \
+          --cov-report=html \
+          --timeout=60 \
+          -v
+      env:
+        VCR_RECORD_MODE: none  # Ensure we never record in CI
+
+    - name: Upload coverage reports to Codecov
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+    - name: Upload coverage HTML report
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: htmlcov/
+
+  test-search-dict:
+    # Keep the existing search_dict tests running separately
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-testing.txt
+        pip install -e .
+
+    - name: Run search_dict tests
+      run: |
+        pytest tests/test_search_dict.py -v --benchmark-only
+
+  check-cassettes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Check cassette age
+      run: |
+        python tests/scripts/refresh_cassettes.py --check-age --max-age 90
+      continue-on-error: true  # Don't fail CI on stale cassettes, just warn

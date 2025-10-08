@@ -16,8 +16,24 @@ run = [
 ]
 
 [tasks.test]
-description = "Run tests with pytest"
-run = "pytest"
+description = "Run tests in strict mode (no network access)"
+run = "pytest tests/ --record-mode=none --block-network --allowed-hosts=localhost -v"
+
+[tasks.test-coverage]
+description = "Run tests with coverage report"
+run = "pytest tests/ --record-mode=none --block-network --allowed-hosts=localhost --cov=youtube_comment_downloader --cov-report=term-missing --cov-report=html"
+
+[tasks.test-record]
+description = "Record new test cassettes (requires internet)"
+run = "pytest tests/ --record-mode=rewrite -v -m network"
+
+[tasks.cassette-refresh]
+description = "Refresh all VCR cassettes"
+run = "python tests/scripts/refresh_cassettes.py --all"
+
+[tasks.cassette-check]
+description = "Check cassette age (warn if older than 30 days)"
+run = "python tests/scripts/refresh_cassettes.py --check-age --max-age 30"
 
 [tasks.lint]
 description = "Run linting checks"

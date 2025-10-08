@@ -42,6 +42,15 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *,cover
+.pytest_cache/
+*.py,cover
+.hypothesis/
+
+# Test cassettes backup
+tests/cassettes.backup/
+
+# Benchmarks
+.benchmarks/
 
 # Translations
 *.mo
