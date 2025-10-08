@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "// Git operations",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git rm:*)",
+      "Bash(git checkout:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git log:*)",
+
+      "// MCP Tools - Documentation",
+      "mcp__Context7__resolve-library-id",
+      "mcp__Context7__get-library-docs",
+
+      "// Web tools",
+      "WebSearch",
+
+      "// File reads and writes for zenrows cache and tmp",
+      "Read(tmp/**)",
+      "Write(tmp/**)"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": []
+}
