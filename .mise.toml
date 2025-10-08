@@ -1,7 +1,7 @@
 # mise configuration for youtube-comment-downloader
 [env]
 # Python virtual environment configuration
-_.python.venv = { path = ".venv", create = true }
+_.python.venv = { path = ".venv", create = true, uv_create_args = ['--seed'] }
 
 [tasks.install]
 description = "Install project dependencies"

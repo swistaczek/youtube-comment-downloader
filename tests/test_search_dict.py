@@ -1,4 +1,6 @@
-from downloader import search_dict
+from youtube_comment_downloader.downloader import YoutubeCommentDownloader
+
+search_dict = YoutubeCommentDownloader.search_dict
 
 
 def test_that_nothing_is_yielded_from_empty_dict():
