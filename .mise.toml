@@ -1,0 +1,38 @@
+# mise configuration for youtube-comment-downloader
+[env]
+# Python virtual environment configuration
+_.python.venv = { path = ".venv", create = true }
+
+[tasks.install]
+description = "Install project dependencies"
+run = "pip install -r requirements.txt"
+
+[tasks.install-dev]
+description = "Install development dependencies"
+run = [
+  "pip install -r requirements.txt",
+  "pip install -r requirements-testing.txt",
+  "pip install -e ."
+]
+
+[tasks.test]
+description = "Run tests with pytest"
+run = "pytest"
+
+[tasks.lint]
+description = "Run linting checks"
+run = [
+  "python -m py_compile youtube_comment_downloader/*.py",
+  "python -m py_compile tests/*.py"
+]
+
+[tasks.clean]
+description = "Clean build artifacts"
+run = [
+  "rm -rf build/",
+  "rm -rf dist/",
+  "rm -rf *.egg-info",
+  "find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true",
+  "find . -type f -name '*.pyc' -delete",
+  "find . -type f -name '*.pyo' -delete"
+]

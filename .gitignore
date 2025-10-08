@@ -58,3 +58,6 @@ target/
 
 # emacs
 *~
+
+# mise
+.mise/
