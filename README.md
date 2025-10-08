@@ -1,4 +1,9 @@
 # youtube-comment-downloader
+
+[![Tests](https://github.com/swistaczek/youtube-comment-downloader/actions/workflows/test.yml/badge.svg)](https://github.com/swistaczek/youtube-comment-downloader/actions/workflows/test.yml)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/github/license/swistaczek/youtube-comment-downloader)](LICENSE)
+
 Simple script for downloading Youtube comments without using the Youtube API. The output is in line delimited JSON.
 
 ### Installation
